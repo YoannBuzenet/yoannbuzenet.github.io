@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV - Nom Prénom</title>
+  <style>
+    :root {
+      /* ===== Color constants ===== */
+      --color-primary: #46c0c8;       /* turquoise */
+      --color-primary-dark: #2ba7af;
+      --color-text: #1f1f1f;
+      --color-text-muted: #666666;
+      --color-bg: #f3f3f3;
+      --color-panel: #ececec;
+      --color-white: #ffffff;
+      --color-black: #101010;
+      --color-divider: #d8d8d8;
+
+      /* ===== Layout constants ===== */
+      --page-width: 210mm;
+      --page-height: 297mm;
+      --sidebar-width: 72mm;
+      --content-padding: 12mm;
+      --sidebar-padding: 10mm;
+
+      /* ===== Typography ===== */
+      --font-main: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-title-size: 18px;
+      --font-name-size: 28px;
+      --font-body-size: 12px;
+      --font-small-size: 11px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ddd;
+      font-family: var(--font-main);
+      color: var(--color-text);
+    }
+
+    /* Print setup */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+      .cv-page {
+        margin: 0;
+        box-shadow: none;
+      }
+    }
+
+    .cv-page {
+      position: relative;
+      width: var(--page-width);
+      min-height: var(--page-height);
+      margin: 12px auto;
+      background: var(--color-bg);
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+    }
+
+    /* Decorative top shapes (right side background) */
+    .cv-page::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: calc(var(--sidebar-width) - 18mm);
+      width: calc(100% - (var(--sidebar-width) - 18mm));
+      height: 52mm;
+      background: var(--color-primary);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 28% 48%);
+      z-index: 0;
+    }
+
+    .cv-page::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 110mm;
+      height: 62mm;
+      background: var(--color-black);
+      clip-path: polygon(0 0, 86% 0, 38% 52%, 0 72%);
+      z-index: 0;
+    }
+
+    .sidebar,
+    .main {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: rgba(255,255,255,0.15);
+      padding: var(--sidebar-padding);
+      padding-top: 14mm;
+      border-right: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .photo {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.2), rgba(0,0,0,0.05)),
+        url("https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=700&q=80")
+        center/cover no-repeat;
+      margin-bottom: 12mm;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .side-section {
+      margin-bottom: 10mm;
+    }
+
+    .side-section h3 {
+      margin: 0 0 5mm;
+      font-size: 16px;
+      line-height: 1.15;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--color-text);
+    }
+
+    .side-section h3 .icon {
+      width: 18px;
+      text-align: center;
+      font-size: 15px;
+      color: var(--color-text);
+    }
+
+    .side-item {
+      margin-bottom: 4mm;
+      font-size: var(--font-body-size);
+      line-height: 1.35;
+    }
+
+    .side-item strong {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 1px;
+      color: var(--color-text);
+    }
+
+    .side-item span {
+      color: var(--color-text-muted);
+    }
+
+    .bullet-list {
+      margin: 0;
+      padding-left: 16px;
+      font-size: var(--font-body-size);
+      line-height: 1.4;
+      color: var(--color-text);
+    }
+
+    .bullet-list li {
+      margin-bottom: 3mm;
+    }
+
+    /* Main content */
+    .main {
+      padding: 34mm var(--content-padding) 10mm var(--content-padding);
+      background: rgba(255,255,255,0.25);
+    }
+
+    .header {
+      margin-bottom: 8mm;
+    }
+
+    .name {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      color: var(--color-text);
+    }
+
+    .job-title {
+      margin: 2mm 0 4mm;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+    }
+
+    .summary {
+      margin: 0;
+      font-size: var(--font-body-size);
+      line-height: 1.45;
+      color: #333;
+      max-width: 100%;
+    }
+
+    .section {
+      margin-top: 7mm;
+    }
+
+    .section-title {
+      margin: 0 0 4mm;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--color-primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.2px;
+    }
+
+    .section-title .icon {
+      font-size: 14px;
+      width: 16px;
+      text-align: center;
+    }
+
+    .entry {
+      margin-bottom: 5.5mm;
+      page-break-inside: avoid;
+    }
+
+    .entry .dates {
+      font-size: var(--font-small-size);
+      color: var(--color-text-muted);
+      margin-bottom: 1px;
+    }
+
+    .entry .role {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--color-text);
+    }
+
+    .entry .company {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .entry .desc {
+      margin: 2mm 0 2mm;
+      font-size: var(--font-body-size);
+      line-height: 1.4;
+      color: var(--color-text-muted);
+    }
+
+    .entry ul {
+      margin: 0;
+      padding-left: 16px;
+      font-size: var(--font-body-size);
+      line-height: 1.35;
+      color: var(--color-text-muted);
+    }
+
+    .entry ul li {
+      margin-bottom: 1mm;
+    }
+
+    /* Two-column small blocks for bottom section if needed */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3mm 5mm;
+    }
+
+    /* Fine tune to keep on one page */
+    .compact .entry {
+      margin-bottom: 4.5mm;
+    }
+
+    .compact .entry .desc {
+      margin: 1.5mm 0 1.5mm;
+    }
+
+    /* Mobile preview (still usable) */
+    @media (max-width: 900px) {
+      .cv-page {
+        width: 100%;
+        min-height: auto;
+        margin: 0;
+        grid-template-columns: 1fr;
+      }
+
+      .cv-page::before,
+      .cv-page::after {
+        display: none;
+      }
+
+      .sidebar {
+        padding-top: 20px;
+      }
+
+      .main {
+        padding-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cv-page">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div
+        class="photo"
+        aria-label="Photo de profil"
+        style="background:
+          linear-gradient(135deg, rgba(255,255,255,0.2), rgba(0,0,0,0.05)),
+          url('./assets/yoann.png') center/cover no-repeat;"
+      ></div>
+
+      <section class="side-section">
+        <h3><span class="icon">👤</span>Profil</h3>
+
+        <div class="side-item">
+          <strong>Adresse</strong>
+          <span>Lyon, Auvergne-Rhône-Alpes, France</span>
+        </div>
+
+        <div class="side-item">
+          <strong>Email</strong>
+          <span>ybuzenet@gmail.com</span>
+        </div>
+
+        <div class="side-item">
+          <strong>LinkedIn</strong>
+          <span>linkedin.com/in/yoann-buzenet</span>
+        </div>
+
+        <div class="side-item">
+          <strong>Site</strong>
+          <span>www.chatsystem.ai</span>
+        </div>
+      </section>
+
+      <section class="side-section">
+        <h3><span class="icon">⚙️</span>Compétences</h3>
+        <ul class="bullet-list">
+          <li>TypeScript / Node.js / NestJS</li>
+          <li>React / React Native / Next.js</li>
+          <li>Architecture API-first & microservices</li>
+          <li>GraphQL Federation / event-driven</li>
+          <li>CI/CD GitLab, Docker, OpenShift</li>
+          <li>AWS & cloud providers</li>
+          <li>Web scraping / Puppeteer</li>
+          <li>IA générative & agentique</li>
+        </ul>
+      </section>
+
+      <section class="side-section">
+        <h3><span class="icon">🗣️</span>Langues</h3>
+        <ul class="bullet-list">
+          <li>Français — Langue maternelle</li>
+          <li>Anglais — Professionnel</li>
+          <li>Espagnol — Professionnel</li>
+        </ul>
+      </section>
+
+      <section class="side-section">
+        <h3><span class="icon">🎯</span>Atouts</h3>
+        <ul class="bullet-list">
+          <li>Très forte capacité de travail</li>
+          <li>Lead technique hands-on</li>
+          <li>Sens produit & exécution rapide</li>
+          <li>Goût pour les systèmes et l’informatique</li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main compact">
+      <header class="header">
+        <h1 class="name">Yoann Buzenet</h1>
+        <div class="job-title">Lead Developer / Product & Technical Lead — TypeScript, Node.js, React</div>
+        <p class="summary">
+          Développeur expérimenté et lead dev, passionné d’informatique et de construction produit.
+          J’ai évolué de rôles orientés web / e-commerce vers des postes de développement full-stack, puis de lead technique,
+          jusqu’à la création d’un produit SaaS. J’interviens sur l’architecture, le code, les intégrations et la delivery,
+          avec une forte culture du résultat, de la qualité et du travail bien fait.
+        </p>
+      </header>
+
+      <section class="section">
+        <h2 class="section-title"><span class="icon">💼</span>Expériences professionnelles</h2>
+
+        <article class="entry">
+          <div class="dates">Fév. 2024 – Présent</div>
+          <p class="role">Founder / Product & Technical Lead</p>
+          <p class="company">ChatSystem — Lyon / Remote</p>
+          <p class="desc">
+            Conception et développement d’une solution SaaS de chatbot e-commerce orientée recommandation produit.
+          </p>
+          <ul>
+            <li>Produit SaaS de bout en bout : architecture, backend, widget embarquable, delivery.</li>
+            <li>Approche API-first (OpenAPI/Swagger) et onboarding marchands.</li>
+            <li>Modélisation métier catalogue / filtres / validation de données.</li>
+            <li>Intégration IA générative & agentique pour compréhension d’intention et recommandation contextuelle.</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="dates">Sept. 2024 – Oct. 2025</div>
+          <p class="role">Lead Dev</p>
+          <p class="company">Qöna — Genève / Remote</p>
+          <p class="desc">
+            Application de coaching sportif, architecture moderne orientée microservices.
+          </p>
+          <ul>
+            <li>Architecture microservices (TypeScript + Python), queues, event bus, API & auth.</li>
+            <li>GraphQL Federation, NestJS, architecture hexagonale, Mongoose.</li>
+            <li>Synchronisations avec providers externes (Garmin, Strava).</li>
+            <li>Refonte front mobile React Native + Apollo.</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="dates">Janv. 2023 – Fév. 2024</div>
+          <p class="role">Lead Dev</p>
+          <p class="company">Lya Protect — Lyon</p>
+          <p class="desc">
+            Lead technique et management d’équipe sur une stack TypeScript / React / Nest.
+          </p>
+          <ul>
+            <li>Management d’une équipe de 4 personnes.</li>
+            <li>Développement applicatif (NestJS, event-driven, Next.js 13, React 18).</li>
+            <li>Scraping sur mesure et intégration ChatGPT dans le CRM (function calling).</li>
+            <li>Industrialisation : Docker, OpenShift, CI/CD GitLab.</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="dates">Sept. 2021 – Déc. 2022</div>
+          <p class="role">Full-stack Developer</p>
+          <p class="company">Lya Protect — Lyon</p>
+          <ul>
+            <li>Web scraping / APIs (Node.js, Puppeteer), rétro-ingénierie et automatisation.</li>
+            <li>Outils internes, observabilité, monitoring, synchronisation AWS, CI/CD.</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="dates">Juin 2020 – Août 2021</div>
+          <p class="role">Front-End Developer</p>
+          <p class="company">VPauto — Lorient</p>
+          <ul>
+            <li>Réécriture d’un logiciel métier en équipe (Lotus => API + React / Redux).</li>
+            <li>Tests (unitaires, E2E), optimisation runtime, CI/CD Azure.</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="dates">2014 – 2019</div>
+          <p class="role">Online Manager (Magic Bazar, Espace Magic)</p>
+          <p class="company">Paris / Toulouse</p>
+          <ul>
+            <li>E-commerce, outils internes, pricing, scraping, spécifications, qualité.</li>
+            <li>Première spécialisation web : contenu, scripts, automatisation, travail terrain.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title"><span class="icon">🎓</span>Formations</h2>
+
+        <div class="grid-2">
+          <article class="entry">
+            <div class="dates">2019</div>
+            <p class="role">3W Academy</p>
+            <p class="company">Développement web (RNCP)</p>
+          </article>
+
+          <article class="entry">
+            <div class="dates">2012</div>
+            <p class="role">NEOMA Business School</p>
+            <p class="company">Master 2 Marketing</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
