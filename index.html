@@ -50,15 +50,9 @@
       margin: 0;
     }
 
-    @media print {
-      body {
-        background: white;
-      }
-      .cv-page {
-        margin: 0;
-        box-shadow: none;
-      }
-    }
+    
+
+  
 
     .cv-page {
       position: relative;
@@ -313,6 +307,163 @@
         padding-top: 10px;
       }
     }
+
+    /* ===========================
+   PRINT (A4, desktop layout)
+   =========================== */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Force desktop layout in print (avoid mobile preview styles) */
+  .cv-page {
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    display: grid !important;
+    grid-template-columns: 72mm 1fr !important; /* restore normal width */
+  }
+
+  .cv-page::before,
+  .cv-page::after {
+    display: block !important;
+  }
+
+  /* Override the mobile media query effects */
+  .sidebar {
+    padding: 8mm !important;
+    padding-top: 11mm !important; /* slightly tighter than screen, but not tiny */
+  }
+
+  .main {
+    padding: 30mm 10mm 8mm 10mm !important;
+  }
+
+  /* Keep readable typography */
+  .name {
+    font-size: 28px !important; /* not 25 */
+    line-height: 1.05 !important;
+  }
+
+  .job-title {
+    font-size: 15px !important;
+    margin: 1.5mm 0 3mm !important;
+    line-height: 1.2 !important;
+  }
+
+  .summary {
+    font-size: 11.2px !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
+  }
+
+  /* Compact but not crushed */
+  .header {
+    margin-bottom: 4mm !important;
+  }
+
+  .section {
+    margin-top: 3mm !important;
+  }
+
+  .section-title {
+    margin: 0 0 2mm !important;
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+  }
+
+  .entry {
+    margin-bottom: 3.2mm !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  .entry .dates {
+    font-size: 10px !important;
+    margin-bottom: 0.5mm !important;
+    line-height: 1.1 !important;
+  }
+
+  .entry .role,
+  .entry .company {
+    font-size: 12px !important;
+    line-height: 1.15 !important;
+    margin: 0 !important;
+  }
+
+  .entry .desc {
+    margin: 1mm 0 1mm !important;
+    font-size: 11px !important;
+    line-height: 1.28 !important;
+  }
+
+  .entry ul {
+    margin: 0 !important;
+    padding-left: 14px !important;
+    font-size: 11px !important;
+    line-height: 1.22 !important;
+  }
+
+  .entry ul li {
+    margin-bottom: 0.6mm !important;
+  }
+
+  /* Sidebar readable */
+  .photo {
+    margin-bottom: 8mm !important;
+  }
+
+  .side-section {
+    margin-bottom: 6.5mm !important;
+  }
+
+  .side-section h3 {
+    margin: 0 0 2mm !important;
+    font-size: 14px !important;
+    line-height: 1.1 !important;
+  }
+
+  .side-item {
+    margin-bottom: 2.6mm !important;
+    font-size: 10.8px !important;
+    line-height: 1.25 !important;
+  }
+
+  .bullet-list {
+    margin: 0 !important;
+    padding-left: 14px !important;
+    font-size: 10.8px !important;
+    line-height: 1.22 !important;
+  }
+
+  .bullet-list li {
+    margin-bottom: 1.2mm !important;
+  }
+
+  .grid-2 {
+    gap: 2mm 4mm !important;
+  }
+
+  /* Prevent Chrome from using the screen mobile layout in print preview */
+  @media screen {
+    /* nothing */
+  }
+}
   </style>
 </head>
 <body>
