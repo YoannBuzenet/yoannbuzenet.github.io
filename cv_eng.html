@@ -474,9 +474,29 @@
   padding: 0 2px 2px;
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
   position: relative;
   z-index: 3;
+}
+
+/* Real background container (symmetrical + easy to tune) */
+.lang-menu-shell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+
+  /* more neutral / cleaner background */
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+
+  /* soft glass look */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.35);
 }
 
 .lang-link {
@@ -484,23 +504,25 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;
+  min-width: 46px;
   height: 34px;
   padding: 0 12px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.45);
-  background: rgba(255,255,255,0.68);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--color-text);
+
   text-decoration: none;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.4px;
   line-height: 1;
+
+  color: var(--color-text);
+  background: rgba(255,255,255,0.70);
+  border: 1px solid rgba(255,255,255,0.55);
+
   box-shadow:
-    0 4px 14px rgba(0,0,0,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.55);
+    0 2px 8px rgba(0,0,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.65);
+
   transition:
     transform 0.16s ease,
     box-shadow 0.16s ease,
@@ -509,41 +531,17 @@
     color 0.16s ease;
 }
 
-/* soft glow ring */
-.lang-link::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(70, 192, 200, 0.22),
-    rgba(43, 167, 175, 0.10),
-    rgba(255,255,255,0)
-  );
-  opacity: 0;
-  transition: opacity 0.16s ease;
-  z-index: -1;
-}
-
 .lang-link:hover {
   transform: translateY(-1px);
-  background: rgba(255,255,255,0.88);
-  border-color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(255,255,255,0.80);
   box-shadow:
-    0 8px 20px rgba(0,0,0,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.7);
-}
-
-.lang-link:hover::before {
-  opacity: 1;
+    0 6px 14px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
 .lang-link:active {
   transform: translateY(0);
-  box-shadow:
-    0 3px 10px rgba(0,0,0,0.08),
-    inset 0 1px 0 rgba(255,255,255,0.55);
 }
 
 /* keyboard accessibility */
@@ -551,37 +549,18 @@
   outline: none;
   box-shadow:
     0 0 0 3px rgba(70, 192, 200, 0.25),
-    0 8px 20px rgba(0,0,0,0.10),
-    inset 0 1px 0 rgba(255,255,255,0.7);
+    0 6px 14px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.8);
 }
 
 /* Active language */
 .lang-link[aria-current="page"] {
+  color: #fff;
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   border-color: rgba(0,0,0,0.06);
-  color: #fff;
   box-shadow:
-    0 8px 20px rgba(43, 167, 175, 0.28),
+    0 6px 16px rgba(43, 167, 175, 0.28),
     inset 0 1px 0 rgba(255,255,255,0.22);
-}
-
-.lang-link[aria-current="page"]::before {
-  opacity: 0;
-}
-
-/* Optional tiny separator effect behind the group */
-.lang-menu::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 108px;
-  height: 44px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.18);
-  filter: blur(0.2px);
-  z-index: -1;
 }
 
 /* Mobile */
@@ -590,19 +569,18 @@
     width: 100%;
     margin: 0;
     padding: 10px 12px 0;
-    gap: 8px;
+  }
+
+  .lang-menu-shell {
+    margin-left: auto;
+    gap: 6px;
+    padding: 5px;
   }
 
   .lang-link {
     min-width: 42px;
     height: 32px;
     padding: 0 10px;
-  }
-
-  .lang-menu::after {
-    right: 12px;
-    width: 98px;
-    height: 40px;
   }
 }
 
@@ -622,10 +600,10 @@
 <body>
   <!-- Add right after <body> -->
 <nav class="lang-menu" aria-label="Language selector">
-  <!-- FR file: set aria-current="page" on FR -->
-  <!-- EN file: set aria-current="page" on EN -->
-  <a class="lang-link" href="index.html" lang="fr">FR</a>
-  <a class="lang-link" href="cv_eng.html" lang="en" aria-current="page">EN</a>
+  <div class="lang-menu-shell">
+    <a class="lang-link" href="index.html" lang="fr" >FR</a>
+    <a class="lang-link" href="cv_eng.html" lang="en" aria-current="page">EN</a>
+  </div>
 </nav>
   <div class="cv-page">
     <!-- LEFT SIDEBAR -->
